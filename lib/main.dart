@@ -2,8 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:note_creeg/src/blocs/provider.dart';
 import 'package:note_creeg/src/pages/home_pages.dart';
 import 'package:note_creeg/src/pages/login_page.dart';
- 
-void main() => runApp(MyApp());
+import 'dart:io';
+
+void main() async {
+
+  try {
+    final result = await InternetAddress.lookup('google.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      print('connected');
+    }
+  } on SocketException catch (_) {
+    print('not connected');
+  }
+  runApp(MyApp());
+} 
  
 class MyApp extends StatelessWidget {
   @override
