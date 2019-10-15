@@ -15,7 +15,8 @@ class LoginBloc with Validators{
   Stream<String> get passwordStream => _passwordController.stream.transform( validarPassword );
 
   Stream<bool> get formValidStream => 
-      Observable.combineLatest2(emailStream, passwordStream, (e, p) => true );
+      Observable.combineLatest2(emailStream, passwordStream, (l,p)=>true).asBroadcastStream();
+      //Observable.combineLatest2(emailStream, passwordStream, (e, p) => true );
 
   // Insert value steam
   Function(String) get changeEmail => _emailController.sink.add;

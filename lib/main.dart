@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_creeg/src/blocs/provider.dart';
+import 'package:note_creeg/src/preferences/user_preferences.dart';
+import 'package:note_creeg/src/providers/provider.dart';
 import 'package:note_creeg/src/pages/home_pages.dart';
 import 'package:note_creeg/src/pages/login_page.dart';
 import 'dart:io';
@@ -8,21 +9,17 @@ import 'package:note_creeg/src/pages/signup_page.dart';
 
 void main() async {
 
-  try {
-    final result = await InternetAddress.lookup('google.com');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      print('connected');
-    }
-  } on SocketException catch (_) {
-    print('not connected');
-  }
+  final prefs = new UserPreferences();
+  await prefs.initPrefs();
+  
   runApp(MyApp());
 } 
  
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
+    final prefs = new UserPreferences();
+    print(prefs.token);
     return Provider(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

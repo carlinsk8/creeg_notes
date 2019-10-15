@@ -9,13 +9,13 @@ class Validators {
     handleData: ( email, sink ) {
 
 
-      Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-      RegExp regExp   = new RegExp(pattern);
+      final Pattern pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+      final RegExp emailExp = new RegExp(pattern);
 
-      if ( email.length >= 6 ) {
-        sink.add( email );
+      if (!emailExp.hasMatch(email) || email.isEmpty){
+        sink.addError('Entre a valid email');
       } else {
-        sink.addError('Email no es correcto');
+        sink.add(email);
       }
 
     }
