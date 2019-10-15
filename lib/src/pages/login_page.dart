@@ -103,7 +103,10 @@ class LoginPage extends StatelessWidget {
               ],
             ),
           ),
-          Text('Forgot password?'),
+          FlatButton(
+            child: Text('sing up?'),
+            onPressed: () => Navigator.pushReplacementNamed(context, 'signup'),
+          ),
           SizedBox(height: 100.0,)
         ],
       ),

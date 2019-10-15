@@ -4,6 +4,8 @@ import 'package:note_creeg/src/pages/home_pages.dart';
 import 'package:note_creeg/src/pages/login_page.dart';
 import 'dart:io';
 
+import 'package:note_creeg/src/pages/signup_page.dart';
+
 void main() async {
 
   try {
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         initialRoute: 'login',
         routes: {
           'login' : (BuildContext context) => LoginPage(),
+          'signup' : (BuildContext context) => SignUpPage(),
           'home' : (BuildContext context) => HomePage(),
         },
         theme: ThemeData(
