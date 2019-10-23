@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:note_creeg/src/blocs/provider.dart';
+import 'package:note_creeg/src/providers/provider.dart';
 import 'package:note_creeg/src/providers/user_provider.dart';
+import 'package:note_creeg/src/utils/utils.dart';
 
 class SignUpPage extends StatelessWidget {
 
@@ -185,13 +186,19 @@ class SignUpPage extends StatelessWidget {
           elevation: 0.0,
           color: Colors.deepPurple,
           textColor: Colors.white,
-          onPressed: snapshot.hasData ? ()=> _signUp(bloc) : null
+          onPressed: snapshot.hasData ? ()=> _signUp(context,bloc) : null
         );
       },
     );
     
   }
-  _signUp(LoginBloc bloc){
-    userProvider.newUser(bloc.email, bloc.password);
+  _signUp(BuildContext context,LoginBloc bloc) async {
+    Map info = await userProvider.newUser(bloc.email, bloc.password);
+
+    if(info['ok']){
+      Navigator.pushReplacementNamed(context, 'login');
+    }else{
+      showAlert(context, info['message']);
+    }
   }
 }

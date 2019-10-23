@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:note_creeg/src/blocs/provider.dart';
+import 'package:note_creeg/src/providers/provider.dart';
+import 'package:note_creeg/src/providers/user_provider.dart';
+import 'package:note_creeg/src/utils/utils.dart';
 
 class LoginPage extends StatelessWidget {
+  final userProvider = new UserProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +102,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 30.0,),
                 _inputPassword(bloc),
                 SizedBox(height: 30.0,),
-                _inputButton()
+                _inputButton(context,bloc)
               ],
             ),
           ),
@@ -126,7 +129,8 @@ class LoginPage extends StatelessWidget {
               icon: Icon(Icons.alternate_email,color: Colors.deepPurple,),
               hintText: 'example@email.com',
               labelText: 'Email',
-              counterText: snapshot.data
+              counterText: snapshot.data,
+              errorText: snapshot.error
             ),
             onChanged: bloc.changeEmail,
           ),
@@ -156,20 +160,37 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _inputButton() {
+  Widget _inputButton(BuildContext context,LoginBloc bloc) {
 
-    return RaisedButton(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-        child: Text('Submit'),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0)
-      ),
-      elevation: 0.0,
-      color: Colors.deepPurple,
-      textColor: Colors.white,
-      onPressed: (){},
+    return StreamBuilder(
+      stream: bloc.formValidStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot){
+        
+        return RaisedButton(
+          child: Container(
+            padding: EdgeInsets.symmetric( horizontal: 80.0, vertical: 15.0),
+            child: Text('Ingresar'),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0)
+          ),
+          elevation: 0.0,
+          color: Colors.deepPurple,
+          textColor: Colors.white,
+          onPressed: snapshot.hasData ? ()=> login( context, bloc) : null
+        );
+      },
     );
+  }
+  login(BuildContext context,LoginBloc bloc) async {
+
+    Map info = await userProvider.login(bloc.email, bloc.password);
+
+    if(info['ok']){
+      Navigator.pushReplacementNamed(context, 'home');
+    }else{
+      showAlert(context, info['message']);
+    }
+
   }
 }
