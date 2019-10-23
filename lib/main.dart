@@ -1,50 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:note_creeg/src/blocs/provider.dart';
-import 'package:note_creeg/src/pages/home_pages.dart';
-import 'package:note_creeg/src/pages/login_page.dart';
-import 'dart:io';
+import 'package:flutter/services.dart';
 
-import 'package:note_creeg/src/pages/signup_page.dart';
+import 'package:note_creeg/onboarding.dart';
+import 'util.dart';
 
-void main() async {
+void main() => runApp(App());
 
-  try {
-    final result = await InternetAddress.lookup('google.com');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      print('connected');
-    }
-  } on SocketException catch (_) {
-    print('not connected');
+class App extends StatefulWidget {
+  App({Key key}) : super(key: key);
+
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, //top bar color
+      ),
+    );
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    super.initState();
   }
-  runApp(MyApp());
-} 
- 
-class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-
-    return Provider(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Creeg Notes',
-        initialRoute: 'login',
-        routes: {
-          'login' : (BuildContext context) => LoginPage(),
-          'signup' : (BuildContext context) => SignUpPage(),
-          'home' : (BuildContext context) => HomePage(),
-        },
-        theme: ThemeData(
-          //Se indica que el tema tiene un brillo luminoso/claro
-          brightness: Brightness.light,
-          primarySwatch: Colors.deepPurple,
-        ),
-        //Tema Oscuro, se usa cuando se activa el modo oscuro
-        darkTheme: ThemeData(
-          //Se indica que el tema tiene un brillo oscuro
-          brightness: Brightness.dark,
-          primarySwatch: Colors.deepPurple,
-        )
-      )
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        canvasColor: CustomColors.GreyBackground,
+        fontFamily: 'rubik',
+      ),
+      home: Onboarding(),
     );
   }
 }
